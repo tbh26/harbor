@@ -1,7 +1,5 @@
 package hello
 
-import "fmt"
-
-func Greet() {
-	fmt.Println("Hello harbor server greeting.")
+func Greet() string {
+	return "Hello, \"harbor server\" greeting."
 }
