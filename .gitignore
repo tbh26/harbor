@@ -17,5 +17,5 @@
 # ide
 .idea/
 *.iml
-.vscode
+.vscode/
 .DS_Store
