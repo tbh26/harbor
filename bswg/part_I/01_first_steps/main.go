@@ -22,7 +22,7 @@ func inspectArgs() {
 	for index, arg := range args {
 		fmt.Printf(" [%d], arg: '%s' \n", index, arg)
 	}
-	fmt.Printf("\n%V\n\n", args)
+	fmt.Printf("\n%v\n", args)
 }
 
 func argsAdd() {
