@@ -103,7 +103,7 @@ func monthToString(m Month) string {
 }
 
 func fun() {
-	fmt.Printf("\n =-= some fun(c) =-= \n")
+	fmt.Printf("\n =-= some fun(c) or closure =-= \n")
 	a := 20
 	b := 1
 	c := 2
@@ -116,7 +116,18 @@ func fun() {
 	//
 	fmt.Printf("  last result: %d \n", sum(a, b, b, a))
 	//
-	// closure?
+	fmt.Println(" =-=-=-=-=-= ")
+	//
+	fn := accu(1)
+	fmt.Printf(" fn()  --> %d \n", fn())
+	fmt.Printf(" fn()  --> %d \n", fn())
+	fmt.Printf(" fn()  --> %d \n", fn())
+	fmt.Printf(" fn()  --> %d \n", fn())
+	fn2 := accu(2)
+	fmt.Printf(" fn2() --> %d \n", fn2())
+	fmt.Printf(" fn2() --> %d \n", fn2())
+	fmt.Printf(" fn2() --> %d \n", fn2())
+	fmt.Printf(" fn2() --> %d \n", fn2())
 }
 
 func add(a int, b int) int {
@@ -125,7 +136,7 @@ func add(a int, b int) int {
 
 func mul(a int, b int) (result int) {
 	result = a * b
-	return result
+	return
 }
 
 func doit(n int, m int, f func(int, int) int) int {
@@ -140,6 +151,12 @@ func sum(numbers ...int) (r int) {
 	return r
 }
 
-func accu() {
-
+func accu(n int) (f func() int) {
+	a := 0
+	f = func() int {
+		r := a
+		a += n
+		return r
+	}
+	return f
 }
