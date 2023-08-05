@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 const (
 	Answer = 42
@@ -29,6 +32,8 @@ func main() {
 	vars()
 	more()
 	fun()
+	valVsRef()
+	useError()
 	fmt.Println()
 }
 
@@ -159,4 +164,59 @@ func accu(n int) (f func() int) {
 		return r
 	}
 	return f
+}
+
+func valVsRef() {
+	fmt.Printf("\n =-= regular arg, pointer, nil and zero value =-= \n")
+	//
+	n := 42
+	noDouble(n)
+	fmt.Printf(" n == %d \n", n)
+	n = 21
+	double(&n)
+	fmt.Printf(" n == %d \n", n)
+	//
+	var a int
+	var b *int
+	var c bool
+	var d func()
+	var e string
+	fmt.Printf(" a == %v, b == %v, c == %v, d == %v, c == '%v' \n", a, b, c, d, e)
+}
+
+func noDouble(n int) {
+	n *= 2
+	// fmt.Printf(" n == %d \n", n)
+}
+
+func double(n *int) {
+	*n *= 2
+}
+
+func useError() {
+	fmt.Printf("\n =-= error(s) =-= \n")
+	//
+	var m *int
+	n, e := getValue(m)
+	fmt.Printf(" getValue == %v, error == '%v' \n", n, e)
+	n = 42
+	m = &n
+	fmt.Printf(" m == %v, *m == %v \n", m, *m)
+	n, e = getValue(m)
+	fmt.Printf(" getValue == %v, error == '%v' \n", n, e)
+	//
+	e = errors.New(fmt.Sprintf("Oops!"))
+	fmt.Printf(" error == '%v' \n", e)
+}
+
+func getValue(ref *int) (int, error) {
+	result := 0
+	var err error
+	err = nil
+	if ref == nil {
+		err = errors.New(fmt.Sprintf("int reference nil, No value"))
+	} else {
+		result = *ref
+	}
+	return result, err
 }
