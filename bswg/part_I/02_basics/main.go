@@ -28,6 +28,7 @@ func main() {
 	hello()
 	vars()
 	more()
+	fun()
 	fmt.Println()
 }
 
@@ -99,4 +100,46 @@ func monthToString(m Month) string {
 		result = "December"
 	}
 	return result
+}
+
+func fun() {
+	fmt.Printf("\n =-= some fun(c) =-= \n")
+	a := 20
+	b := 1
+	c := 2
+	//
+	r := doit(a*c, c, add)
+	fmt.Printf(" first result: %d \n", r)
+	//
+	r = doit(a+b, c, mul)
+	fmt.Printf("  next result: %d \n", r)
+	//
+	fmt.Printf("  last result: %d \n", sum(a, b, b, a))
+	//
+	// closure?
+}
+
+func add(a int, b int) int {
+	return a + b
+}
+
+func mul(a int, b int) (result int) {
+	result = a * b
+	return result
+}
+
+func doit(n int, m int, f func(int, int) int) int {
+	return f(n, m)
+}
+
+func sum(numbers ...int) (r int) {
+	r = 0
+	for _, n := range numbers {
+		r += n
+	}
+	return r
+}
+
+func accu() {
+
 }
