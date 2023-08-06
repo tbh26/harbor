@@ -3,6 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
+	"math/rand"
+	"time"
 )
 
 const (
@@ -28,11 +30,13 @@ const (
 )
 
 func main() {
+	rand.Seed(time.Now().UnixNano())
 	hello()
 	vars()
 	more()
 	fun()
 	valVsRef()
+	flow()
 	useError()
 	fmt.Println()
 }
@@ -103,6 +107,8 @@ func monthToString(m Month) string {
 		result = "November"
 	case December:
 		result = "December"
+	default:
+		result = "=-="
 	}
 	return result
 }
@@ -191,6 +197,29 @@ func noDouble(n int) {
 
 func double(n *int) {
 	*n *= 2
+}
+
+func flow() {
+	fmt.Printf("\n =-= flow =-= \n")
+	n := 42
+	m := randInt(n-1, n+1)
+	if n == m {
+		fmt.Printf(" equal \n")
+	} else {
+		fmt.Printf(" not equal \n")
+	}
+	m = 0
+	for m <= n {
+		fmt.Printf(" %d", m)
+		m += 1
+	}
+	fmt.Println()
+	//
+	// switch case demo, see monthToString
+}
+
+func randInt(min int, max int) int {
+	return min + rand.Intn(max-min)
 }
 
 func useError() {
