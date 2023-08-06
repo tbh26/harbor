@@ -10,9 +10,13 @@ func Demo() {
 	//
 	arrayDemo()
 	sliceDemo()
+	mapDemo()
+	//
+	fmt.Println()
 }
 
 func arrayDemo() {
+	fmt.Println()
 	//
 	var a1 [4]int
 	a1 = [4]int{0, 1, 4, 9}
@@ -26,6 +30,8 @@ func arrayDemo() {
 }
 
 func sliceDemo() {
+	fmt.Println()
+	//
 	a1 := [3]string{"one", "two", "three"} // array
 	// s1 := []string{"one", "two", "three"}  // slice
 	s1 := a1[:] // slice
@@ -52,4 +58,45 @@ func sliceDemo() {
 		s5[s4Len-(i+1)] = v
 	}
 	fmt.Printf(" s5 == '%v', len: %d, cap: %d \n", s5, len(s5), cap(s5))
+}
+
+func mapDemo() {
+	fmt.Println()
+	//
+	var m1 map[string]int
+	//
+	// m1["one"] = 1 <-panic: assignment to entry in nil map
+	m1 = make(map[string]int, 5)
+	fmt.Printf(" m1 == '%v', len: %d \n", m1, len(m1))
+	m1["one"] = 1
+	fmt.Printf(" m1 == '%v', len: %d \n", m1, len(m1))
+	m1["two"] = 22
+	fmt.Printf(" m1 == '%v', len: %d \n", m1, len(m1))
+	m1 = map[string]int{
+		"three": 333,
+		"four":  4,
+		"five":  55,
+	}
+	fmt.Printf(" m1 == '%v', len: %d \n", m1, len(m1))
+	//
+	key := "three"
+	val, found := m1[key]
+	fmt.Printf(" m1[%s], val: '%v', found: %v \n", key, val, found)
+	key = "two"
+	val, found = m1[key]
+	fmt.Printf(" m1[%s], val: '%v', found: %v \n", key, val, found)
+	//
+	key = "five"
+	delete(m1, key)
+	fmt.Printf(" m1 == '%v', len: %d \n", m1, len(m1))
+	//
+	m1["six"] = 6
+	m1["seven"] = 7
+	m1["eight"] = 8
+	m1["nine"] = 9
+	fmt.Printf(" m1 == '%v', len: %d \n", m1, len(m1))
+	for k, v := range m1 {
+		fmt.Printf(" m1[%s] == %d \n", k, v)
+	}
+	//
 }
