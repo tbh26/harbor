@@ -29,6 +29,10 @@ const (
 	December
 )
 
+func init() {
+	fmt.Printf("\n=-= init =-=\n")
+}
+
 func main() {
 	rand.Seed(time.Now().UnixNano())
 	hello()
