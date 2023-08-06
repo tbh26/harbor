@@ -38,6 +38,7 @@ func main() {
 	valVsRef()
 	flow()
 	useError()
+	deferRecoverPanic()
 	fmt.Println()
 }
 
@@ -219,6 +220,7 @@ func flow() {
 }
 
 func randInt(min int, max int) int {
+	// includes min, excludesmax
 	return min + rand.Intn(max-min)
 }
 
@@ -248,4 +250,51 @@ func getValue(ref *int) (int, error) {
 		result = *ref
 	}
 	return result, err
+}
+
+func deferRecoverPanic() {
+	fmt.Printf("\n =-= defer, panic & recover =-= \n")
+	//
+	defer message(" Done!")
+	deferDemo()
+	fmt.Println("   - after defer demo")
+	//
+	n := 42
+	m := randInt(n-1, n+2)
+	message(fmt.Sprintf("values: n == %d, m == %d", n, m))
+	shouldRecover := true
+	if m == 41 {
+		shouldRecover = false
+	}
+	if shouldRecover {
+		defer func() {
+			r := recover()
+			if r != nil {
+				fmt.Printf("=> No need to panic! (r: %v) \n", r)
+			}
+		}()
+		defer message("will recover")
+	} else {
+		message("no recover")
+	}
+	//
+	if n != m {
+		panic("Oops, panic!")
+	} else {
+		message("Don't panic.")
+	}
+	//
+}
+
+func deferDemo() {
+	defer message("last...")
+	message("first!")
+	defer message("fifth")
+	message("second")
+	defer fmt.Println("   fourth")
+	message("third")
+}
+
+func message(s string) {
+	fmt.Printf("   =-= message : '%s' \n", s)
 }
