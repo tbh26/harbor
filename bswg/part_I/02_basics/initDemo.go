@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"example.org/bswg/p1/ch2/demo"
+)
 
 var x = setX()
 
@@ -17,5 +21,6 @@ func init() {
 func main() {
 	fmt.Println("main")
 	fmt.Printf(" x == %d \n", x)
+	demo.Greet("world!")
 	fmt.Println("done")
 }
