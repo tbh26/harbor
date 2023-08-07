@@ -85,11 +85,11 @@ func structDemo() {
 	fmt.Printf(" p2 == %+v \n", p2)
 }
 
-func (i Item) Info() string { //Item receiver
+func (i Item) info() string { //Item receiver
 	return fmt.Sprintf("Item{topic: '%s', description: '%s', code: '%d'}", i.Topic, i.Description, i.Code)
 }
 
-func (i *Item) ReverseSome() {
+func (i *Item) reverseSome() {
 	i.Topic = Reverse(i.Topic)
 	i.Description = Reverse(i.Description)
 }
@@ -101,15 +101,30 @@ func Reverse(s string) string {
 	}
 	return string(runes)
 }
+
+func (dob DayOfBirth) ymd() string { // maybe an embedded method?
+	return fmt.Sprintf("%04d-%02d-%02d", dob.Year, dob.Month, dob.Day)
+}
+
+func (p Person2) info() string {
+	//	return fmt.Sprintf("Person2{full name: '%s', date of birth: '%s'}", p.FullName, p.DayOfBirth.ymd())
+	return fmt.Sprintf("Person2{full name: '%s', date of birth: '%s'}", p.FullName, p.ymd()) //<-embedded-method
+}
+
 func methodDemo() {
 	fmt.Println()
 	//
 	i1, _ := NewItem("stool", "🪑 n", 357)
-	fmt.Println(" i1:", i1.Info())
+	var i Item = *i1
+	fmt.Println(" item:", i.info())
 	//
-	i1.ReverseSome()
-	fmt.Println(" i1:", i1.Info())
+	i.reverseSome()
+	fmt.Println(" item:", i.info())
 	//
+	dob := DayOfBirth{21, 3, 1987}
+	name := "John Doe"
+	p := Person2{name, dob}
+	fmt.Println(" person:", p.info())
 }
 
 func interfaceDemo() {
