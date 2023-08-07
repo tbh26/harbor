@@ -11,6 +11,7 @@ func Demo() {
 	//
 	reflectIntro()
 	reflectValue()
+	reflectTag()
 	//
 	fmt.Println()
 }
@@ -147,7 +148,7 @@ func reflectValue() {
 	//
 	d := Zyx{"HOWDY", 42, "GoodBye", "Oops?"}
 	elementD := reflect.ValueOf(&d).Elem()
-	fmt.Printf(" element var 'd': %v, kind: %s \n", elementD, elementD.Kind())
+	fmt.Printf(" element var 'd': %+v, kind: %s \n", elementD, elementD.Kind())
 	for i := 0; i < elementD.NumField(); i += 1 {
 		field := elementD.Field(i)
 		if field.Kind() == reflect.String {
@@ -161,6 +162,39 @@ func reflectValue() {
 			fmt.Printf(" - skip %s (other Kind)\n", field.Kind())
 		}
 	}
-	fmt.Printf(" updated var 'd': %v \n", d)
+	fmt.Printf(" updated var 'd': %+v \n", d)
 	//
+}
+
+type User struct {
+	UserId   string `tagA:"valueA1" tagB:"valueA2"`
+	Email    string `tagB:"value"`
+	Password string `tagC:"v1 v2"`
+}
+
+func reflectTag() {
+	fmt.Println()
+	//
+	userType := reflect.TypeOf(User{})
+	fmt.Printf(" user-type: %v \n", userType)
+	//
+	fieldUserId := userType.Field(0)
+	t := fieldUserId.Tag
+	fmt.Println(" StructTag is:", t)
+	v, _ := t.Lookup("tagA")
+	fmt.Printf(" userId tagA: %s\n", v)
+	v, _ = t.Lookup("tagB")
+	fmt.Printf(" userId tagB: %s\n", v)
+
+	fieldEmail, _ := userType.FieldByName("Email")
+	vEmail := fieldEmail.Tag.Get("tagB")
+	fmt.Println(" email tagB:", vEmail)
+
+	fieldPassword, _ := userType.FieldByName("Password")
+	fmt.Printf(" Password tags: [%s]\n", fieldPassword.Tag)
+	fmt.Println("  ", fieldPassword.Tag.Get("tagC"))
+	//
+	u1 := User{"ABC DEF", "pete@example.org", "Secret42!"}
+	fmt.Printf(" u1: %v \n", u1)
+	// tags?
 }
