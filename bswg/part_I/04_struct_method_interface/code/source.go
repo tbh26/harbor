@@ -85,8 +85,30 @@ func structDemo() {
 	fmt.Printf(" p2 == %+v \n", p2)
 }
 
+func (i Item) Info() string { //Item receiver
+	return fmt.Sprintf("Item{topic: '%s', description: '%s', code: '%d'}", i.Topic, i.Description, i.Code)
+}
+
+func (i *Item) ReverseSome() {
+	i.Topic = Reverse(i.Topic)
+	i.Description = Reverse(i.Description)
+}
+
+func Reverse(s string) string {
+	runes := []rune(s)
+	for index, back := 0, len(runes)-1; index < back; index, back = index+1, back-1 {
+		runes[index], runes[back] = runes[back], runes[index]
+	}
+	return string(runes)
+}
 func methodDemo() {
 	fmt.Println()
+	//
+	i1, _ := NewItem("stool", "🪑 n", 357)
+	fmt.Println(" i1:", i1.Info())
+	//
+	i1.ReverseSome()
+	fmt.Println(" i1:", i1.Info())
 	//
 }
 
