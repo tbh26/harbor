@@ -118,6 +118,7 @@ func methodDemo() {
 	var i Item = *i1
 	fmt.Println(" item:", i.info())
 	//
+	//	(&i).reverseSome()
 	i.reverseSome()
 	fmt.Println(" item:", i.info())
 	//
@@ -127,7 +128,51 @@ func methodDemo() {
 	fmt.Println(" person:", p.info())
 }
 
+type Alive interface {
+	Greet() string
+	Move(string) string
+}
+
+func (p Person2) Greet() string {
+	return fmt.Sprintf("Hello '%s'!", p.FullName)
+}
+
+func (p Person2) Move(direction string) string {
+	return fmt.Sprintf("'%s' moved '%s'", p.FullName, direction)
+}
+
+type Animal struct {
+	Tag string
+}
+
+func (a *Animal) Greet() string {
+	return fmt.Sprintf("Hi '%s'.", a.Tag)
+}
+
+func (a *Animal) Move(direction string) string {
+	return fmt.Sprintf("'%s' moves '%s'", a.Tag, direction)
+}
+
+func demonstrate(a Alive, d string) { //interface as param
+	fmt.Println(a.Greet())
+	fmt.Println(a.Move(d))
+}
+
 func interfaceDemo() {
 	fmt.Println()
+	//
+	p := Person2{"John Doe", DayOfBirth{21, 3, 1987}}
+	direction := "north"
+	fmt.Println(p.Greet())
+	fmt.Println(p.Move(direction))
+	demonstrate(p, direction)
+	demonstrate(&p, direction)
+	//
+	cat := &Animal{Tag: "Kitty"}
+	direction = "away"
+	fmt.Println((*cat).Greet())
+	fmt.Println(cat.Move(direction))
+	//	demonstrate(*cat, direction)
+	demonstrate(cat, direction)
 	//
 }
