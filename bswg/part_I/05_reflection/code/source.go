@@ -98,7 +98,69 @@ func reflectIntro() {
 	//
 }
 
+func ValuePrint(i interface{}) {
+	v := reflect.ValueOf(i)
+	switch v.Kind() {
+	case reflect.Int:
+		fmt.Printf(" int with value: %d \n", v.Interface())
+	case reflect.String:
+		fmt.Printf(" string, content: '%s' \n", v.Interface())
+	default:
+		fmt.Printf(" %s, value: %v \n", v.Kind(), v.Interface())
+	}
+}
+
+type Xyz struct {
+	X int64
+	Y string
+	Z float32
+}
+
+type Zyx struct {
+	Z string
+	Y int
+	X string
+	q string
+}
+
 func reflectValue() {
 	fmt.Println()
+	//
+	a := 42
+	b := "forty two"
+	valueOfA := reflect.ValueOf(a)
+	valueOfB := reflect.ValueOf(b)
+	fmt.Printf(" value-of a: %v \n", valueOfA.Interface())
+	fmt.Printf(" value-of b: %v \n", valueOfB.Interface())
+	//
+	ValuePrint(a)
+	ValuePrint(b)
+	ValuePrint(1.2)
+	//
+	c := Xyz{42, b, 2.1}
+	valueOfC := reflect.ValueOf(c)
+	fmt.Printf(" valueOf var 'c': %v, kind: %s \n", valueOfC, valueOfC.Kind())
+	for i := 0; i < valueOfC.NumField(); i += 1 {
+		field := valueOfC.Field(i)
+		fmt.Printf(" - [%d] Kind(): %s, String(): %s, value/Interface(): %v \n", i, field.Kind(), field.String(), field.Interface())
+	}
+	//
+	d := Zyx{"HOWDY", 42, "GoodBye", "Oops?"}
+	elementD := reflect.ValueOf(&d).Elem()
+	fmt.Printf(" element var 'd': %v, kind: %s \n", elementD, elementD.Kind())
+	for i := 0; i < elementD.NumField(); i += 1 {
+		field := elementD.Field(i)
+		if field.Kind() == reflect.String {
+			current := field.String()
+			if field.CanSet() {
+				field.SetString(strings.ToLower(current))
+			} else {
+				fmt.Printf(" - can NOT update '%s' \n", current)
+			}
+		} else {
+			fmt.Printf(" - skip %s (other Kind)\n", field.Kind())
+		}
+	}
+	fmt.Printf(" updated var 'd': %v \n", d)
 	//
 }
