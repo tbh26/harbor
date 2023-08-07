@@ -175,4 +175,19 @@ func interfaceDemo() {
 	//	demonstrate(*cat, direction)
 	demonstrate(cat, direction)
 	//
+	// empty interface
+	values := []interface{}{42, "emtpy", true, 1.23, Animal{"dog"}, struct {
+		tag string
+	}{"aBc"}} //anonymous struct
+	//
+	for index, val := range values {
+		switch t := val.(type) {
+		default:
+			fmt.Printf(" [%d] == %v  (%T) \n", index, val, t)
+		case int:
+			fmt.Printf(" [%d] == %d  ( int )\n", index, val)
+		case string:
+			fmt.Printf(" [%d] == '%s' ( string )\n", index, val)
+		}
+	}
 }
