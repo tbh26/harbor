@@ -12,6 +12,7 @@ func Demo() {
 	reflectIntro()
 	reflectValue()
 	reflectTag()
+	lawsOfReflection()
 	//
 	fmt.Println()
 }
@@ -197,4 +198,34 @@ func reflectTag() {
 	u1 := User{"ABC DEF", "pete@example.org", "Secret42!"}
 	fmt.Printf(" u1: %v \n", u1)
 	// tags?
+}
+
+func lawsOfReflection() {
+	fmt.Println()
+	//
+	fmt.Println("=-= Three laws of Reflection =-=")
+	//
+	fmt.Println(" - 1st; Reflection goes from interface value to reflection object.")
+	var a int32 = 42
+	fmt.Printf(" var a init32 = 42, reflect.TypeOf(a): %s \n", reflect.TypeOf(a))
+	//
+	fmt.Println(" - 2nd; Reflection goes from reflection object to interface value.")
+	v := reflect.ValueOf(a)
+	fmt.Println(" var a init32 = 42, v := reflect.ValueOf(a), v: ", v)
+	fmt.Printf(" var a init32 = 42, v := reflect.ValueOf(a), v.Interface(): %%d==%d \n", v.Interface())
+	fmt.Printf(" v.CanSet(): %t   (boolean) \n", v.CanSet())
+	//
+	fmt.Println(" - 3rd; To modify a reflection object, the value must be settable.")
+	//
+	//v2 := reflect.ValueOf(a) // note, not an address, just a value
+	//v2.SetInt(13)            // <-- panic!
+	//
+	//v3 := reflect.ValueOf(&a) // note, an address! (not a value)
+	//v3.SetInt(23)             // <-- also panic
+	//
+	v4 := reflect.ValueOf(&a).Elem() // note, an address! (not a value)
+	v4.SetInt(24)                    // <-- also panic
+	fmt.Printf(" var a init32 = 42, v4 := reflect.ValueOf(&a).Elem(), v4.SetInt(24), v4.Interface(): %%d==%d \n", v4.Interface())
+	fmt.Printf(" v4.CanSet(): %t   (boolean) \n", v4.CanSet())
+	//
 }
