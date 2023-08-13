@@ -6,7 +6,7 @@ import (
 )
 
 func IntroDemo() {
-	fmt.Println("Hello code.Demo() world! (ch6)")
+	fmt.Println("Hello code.IntroDemo() world! (ch6)")
 	//
 	intro()
 	delayIntro()
