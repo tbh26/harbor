@@ -1,9 +1,9 @@
 package main
 
-// $ go run readers_writers.go
+// $ go run files.go
 
 import "github.com/tbh26/harbor/bswg/part_I/07_input_output/code"
 
 func main() {
-	code.ReadersWritersDemo()
+	code.FilesDemo()
 }
