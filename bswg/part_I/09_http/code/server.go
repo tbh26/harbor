@@ -53,15 +53,7 @@ func requestInfo() {
 	fmt.Printf("status: %d  ( %q ) \n", r.StatusCode, r.Status)
 	fmt.Println()
 
-	fmt.Println(" = headers =")
-	for k, v := range r.Header {
-		fmt.Printf("%s: ", k)
-		for _, w := range v {
-			fmt.Printf("%s ", w)
-		}
-		fmt.Println()
-	}
-	fmt.Println()
+	showHeaders("headers", r.Header)
 
 	defer r.Body.Close()
 	bodyBuf := bufio.NewScanner(r.Body)
@@ -83,7 +75,7 @@ func info(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(k, " => ", v)
 		if k == "name" {
 			if len(v) > 0 {
-				greet = mergeThem(v)
+				greet = spaceMerge(v)
 			}
 		}
 	}
