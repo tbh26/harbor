@@ -7,7 +7,7 @@ import (
 )
 
 func ActionDemo() {
-	fmt.Println("Hello code.ActionDemo() world! (ch9)")
+	fmt.Println("Hello code.ActionDemo() world! (ch10)")
 
 	firstActionDemo()
 	nextActionDemo()
