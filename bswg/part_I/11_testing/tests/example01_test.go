@@ -1,4 +1,4 @@
-package example_01
+package test
 
 // % go test  -v
 // % go fmt  ./...
