@@ -1,5 +1,8 @@
 package test
 
+// % go test  -v
+// % go fmt  ./...
+
 import "testing"
 
 type Quote string
@@ -8,6 +11,7 @@ type Movie string
 const (
 	Crush   Quote = "To crush your enemies..."
 	T1000   Quote = "I'll be back"
+	Choppa  Quote = "Get to the Choppa!"
 	Unknown Quote = "unknown"
 
 	Conan       Movie = "conan"
@@ -21,6 +25,8 @@ func MovieQuote(movie Movie) Quote {
 		return Crush
 	case Terminator2:
 		return T1000
+	case Predator:
+		return Choppa
 	default:
 		return Unknown
 	}
