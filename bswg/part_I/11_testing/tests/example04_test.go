@@ -101,7 +101,7 @@ func (u *User) FromEncodedFile(format Encoding, filePath string) error {
 func testWriteXML(t *testing.T) {
 	tmpDir := os.TempDir()
 	for _, u := range Users {
-		f := tmpDir + u.UserId + ".xml"
+		f := tmpDir + "/" + u.UserId + ".xml"
 		err := u.ToEncodedFile(XML, f)
 		if err != nil {
 			t.Error(err)
@@ -112,7 +112,7 @@ func testWriteXML(t *testing.T) {
 func testWriteJSON(t *testing.T) {
 	tmpDir := os.TempDir()
 	for _, u := range Users {
-		f := tmpDir + u.UserId + ".json"
+		f := tmpDir + "/" + u.UserId + ".json"
 		err := u.ToEncodedFile(JSON, f)
 		if err != nil {
 			t.Error(err)
