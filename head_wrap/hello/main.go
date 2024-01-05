@@ -16,6 +16,16 @@ const (
 	greet   = "howdy 👋"
 )
 
+func main() {
+	fmt.Println()
+	fmt.Println("Hello head wrapping go...")
+	fmt.Println()
+
+	demoVars()
+	fmt.Println()
+	controlStructures()
+}
+
 func demoVars() {
 	var message string = "Hello demo vars"
 	fmt.Println(message)
@@ -36,10 +46,23 @@ func demoVars() {
 	fmt.Printf("Version: %q, greet: %q \n", Version, greet)
 }
 
-func main() {
-	fmt.Println()
-	fmt.Println("Hello head wrapping go...")
-	fmt.Println()
+func controlStructures() {
+	n, m := 3, 10
+	if n == m {
+		fmt.Println(" n == m ")
+	} else {
+		fmt.Println(" n != m ")
+	}
 
-	demoVars()
+	for x := n; x <= m; x += n {
+		fmt.Printf(" -  x: %d \n", x)
+	}
+
+	for {
+		n += n
+		fmt.Printf(" =  n: %d \n", n)
+		if n > m {
+			break
+		}
+	}
 }
