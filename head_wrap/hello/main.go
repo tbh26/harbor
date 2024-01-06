@@ -4,7 +4,10 @@ package main
 // go build   # creates a binary (named as: basename `pwd` )
 // go install   # installs a binary (./hello) into ${GOPATH}/bin/
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 var (
 	Author  = "tbh"
@@ -24,6 +27,9 @@ func main() {
 	demoVars()
 	fmt.Println()
 	controlStructures()
+	fmt.Println()
+	referenceFun()
+	//fmt.Println()
 }
 
 func demoVars() {
@@ -65,4 +71,27 @@ func controlStructures() {
 			break
 		}
 	}
+}
+
+func divNames(fullName string) (first, next string) {
+	parts := strings.Split(fullName, " ")
+	first, next = parts[0], parts[1]
+	return
+}
+
+func referenceFun() {
+	fullName := "Billy Bob"
+	first, next := divNames(fullName)
+	fmt.Printf("First name: %s, Next name: %s\n", first, next)
+
+	greet := func(greeter string) {
+		fmt.Printf("Hello %s\n", greeter)
+	}
+	greet(next)
+
+	emphasis := func(subject *string) {
+		*subject = fmt.Sprintf("%s!", *subject)
+	}
+	emphasis(&first)
+	greet(first)
 }
