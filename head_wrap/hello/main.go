@@ -31,6 +31,9 @@ func main() {
 	referenceFun()
 	fmt.Println()
 	slices()
+	fmt.Println()
+	maps()
+	fmt.Println()
 }
 
 func demoVars() {
@@ -109,13 +112,40 @@ func slices() {
 	fmt.Printf("number slice: %v \n", numberSlice)
 	ns2 := append(numberSlice, 2)
 	ns2 = append(ns2, 42, 84, 36)
-	fmt.Printf("number slice: %v, ns2: %v \n", numberSlice, ns2)
+	fmt.Printf("number slice: %v, ns2: %#v \n", numberSlice, ns2)
 	for i, val := range ns2 {
 		fmt.Printf("[%d]: %d", i, val)
 		if i == len(ns2)-1 {
 			fmt.Println()
 		} else {
 			fmt.Print(", ")
+		}
+	}
+}
+
+func maps() {
+	// maps
+	scores := map[string]int{
+		"Alice":   86,
+		"Bob":     62,
+		"Charlie": 90,
+		"Debby":   77,
+	}
+	scores["Ellie"] = 72
+	//fmt.Printf("scores: %v\n", scores)
+	fmt.Printf("scores: %#v\n", scores)
+	delete(scores, "Peter") // no-op
+	delete(scores, "Charlie")
+	//
+	counter := 0
+	entriesCount := len(scores)
+	for k, v := range scores {
+		fmt.Printf("%s: %d", k, v)
+		counter += 1
+		if counter != entriesCount {
+			fmt.Print(", ")
+		} else {
+			fmt.Println(".")
 		}
 	}
 }
