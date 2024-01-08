@@ -5,7 +5,9 @@ package main
 // go install   # installs a binary (./hello) into ${GOPATH}/bin/
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 	"strings"
 )
 
@@ -34,6 +36,7 @@ func main() {
 	fmt.Println()
 	maps()
 	fmt.Println()
+	jsonConfig()
 }
 
 func demoVars() {
@@ -148,4 +151,33 @@ func maps() {
 			fmt.Println(".")
 		}
 	}
+}
+
+func loadJson(path string) (result map[string]interface{}, e error) {
+	e = nil
+	//data = map[string]interface{}
+	data, err := os.ReadFile(path)
+	if err != nil {
+		//panic(err)
+		e = err
+		return
+	}
+	e = json.Unmarshal(data, &result)
+	return
+}
+
+//type keyValue map[string]interface{}
+
+func jsonConfig() {
+	dataPath := "data/example.json"
+	data, err := loadJson(dataPath)
+	if err != nil {
+		fmt.Println("data loading failed:", err)
+		return
+	}
+	fmt.Printf("data: %#v \n", data)
+
+	scores := data["scores"].(map[string]interface{})
+	aliceScore := scores["Alice"].(float64)
+	fmt.Printf("scores: %#v, alice(score): %d \n", scores, int(aliceScore))
 }
