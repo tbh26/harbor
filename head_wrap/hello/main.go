@@ -29,7 +29,8 @@ func main() {
 	controlStructures()
 	fmt.Println()
 	referenceFun()
-	//fmt.Println()
+	fmt.Println()
+	slices()
 }
 
 func demoVars() {
@@ -94,4 +95,27 @@ func referenceFun() {
 	}
 	emphasis(&first)
 	greet(first)
+}
+
+func slices() {
+	// array(s) (fixed length)
+	var numbers [3]int
+	fmt.Printf("numbers: %v \n", numbers)
+	numbers = [3]int{2, 42, 12}
+	fmt.Printf("numbers: %v \n", numbers)
+
+	// slices
+	numberSlice := []int{12, 42, 21}
+	fmt.Printf("number slice: %v \n", numberSlice)
+	ns2 := append(numberSlice, 2)
+	ns2 = append(ns2, 42, 84, 36)
+	fmt.Printf("number slice: %v, ns2: %v \n", numberSlice, ns2)
+	for i, val := range ns2 {
+		fmt.Printf("[%d]: %d", i, val)
+		if i == len(ns2)-1 {
+			fmt.Println()
+		} else {
+			fmt.Print(", ")
+		}
+	}
 }
