@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
+	"os"
 )
 
 const (
@@ -23,7 +24,7 @@ type Config struct {
 func main() {
 	config, err := prepareConfig()
 	if err != nil {
-		fmt.Println("Error preparing config:", err)
+		fmt.Println("Prepare failure;", err)
 		return
 	}
 	err = httpServe(config)
@@ -52,6 +53,10 @@ func prepareConfig() (config Config, e error) {
 	flag.StringVar(&config.DirPath, "d", config.DirPath, "http serve content from directory path")
 	flag.Parse()
 	config.Port = uint16(p)
+
+	if _, err := os.Stat(config.DirPath); os.IsNotExist(err) {
+		e = err
+	}
 
 	return
 }
