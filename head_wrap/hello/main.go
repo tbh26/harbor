@@ -37,6 +37,8 @@ func main() {
 	maps()
 	fmt.Println()
 	jsonConfig()
+	fmt.Println()
+	useInterfaces()
 }
 
 func demoVars() {
@@ -166,8 +168,6 @@ func loadJson(path string) (result map[string]interface{}, e error) {
 	return
 }
 
-//type keyValue map[string]interface{}
-
 func jsonConfig() {
 	dataPath := "data/example.json"
 	data, err := loadJson(dataPath)
@@ -180,4 +180,46 @@ func jsonConfig() {
 	scores := data["scores"].(map[string]interface{})
 	aliceScore := scores["Alice"].(float64)
 	fmt.Printf("scores: %#v, alice(score): %d \n", scores, int(aliceScore))
+}
+
+type Cat struct {
+	name string
+}
+
+func (c Cat) Pet() {
+	fmt.Printf("%q: Prrr..\n", c.name)
+}
+
+func (c Cat) Name() string {
+	return c.name
+}
+
+type Dog struct {
+	name string
+}
+
+func (d Dog) Pet() {
+	fmt.Printf("%q barks: woef woef!\n", d.name)
+}
+
+func (d Dog) Name() string {
+	return d.name
+}
+
+type Animal interface {
+	Pet()
+	Name() string
+}
+
+func compilment(a Animal) {
+	fmt.Printf("Good job,2020 %s! \n", a.Name())
+	a.Pet()
+}
+
+func useInterfaces() {
+	c := Cat{"Alice"}
+	compilment(c)
+
+	d := Dog{"Bobby"}
+	compilment(d)
 }
