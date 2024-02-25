@@ -26,3 +26,7 @@ head_wrap/hello/main
 head_wrap/http_serve/http_serve
 head_wrap/http_serve/main
 
+# python
+/venv/
+
+
