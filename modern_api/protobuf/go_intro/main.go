@@ -42,6 +42,17 @@ func printOneOf(item interface{}) {
 	}
 }
 
+func createMap() *myProto.MapExample {
+	message := &myProto.MapExample{
+		Ids: map[string]*myProto.IdWrapper{
+			"my_id":  {Id: 42},
+			"my_id2": {Id: 84},
+			"my_id3": {Id: 333},
+		},
+	}
+	return message
+}
+
 func main() {
 	fmt.Println("Hello proto(c) world! ")
 	fmt.Println()
@@ -57,4 +68,5 @@ func main() {
 	fmt.Println("printOneOf():  ...  (next line) ")
 	printOneOf("Hello world?  (some filler text) ")
 
+	fmt.Println("createMap; ", createMap())
 }
