@@ -24,10 +24,18 @@ func createComplex() *myProto.Complex {
 	}
 }
 
+func createEyeEnum() *myProto.Enumeration {
+	return &myProto.Enumeration{
+		//EyeColor: 1,
+		EyeColor: myProto.EyeColor_EYE_COLOR_GREEN,
+	}
+}
+
 func main() {
 	fmt.Println("Hello proto(c) world! ")
 	fmt.Println()
 
 	fmt.Println("createSimple(); ", createSimple())
 	fmt.Println("createComplex(); ", createComplex())
+	fmt.Println("createEyeEnum(); ", createEyeEnum())
 }
