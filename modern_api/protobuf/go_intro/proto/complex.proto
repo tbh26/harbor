@@ -4,13 +4,12 @@ package example.complex;
 
 option go_package = "github.com/tbh26/harbor/modern_api/protobuf/go_intro/proto";
 
-message Dummy {
+message Dum {
   int32 id = 1;
   string name = 2;
 }
 
 message Complex {
-  Dummy one_dummy = 2;
-  repeated Dummy multiple_dummies = 3;
+  Dum one_dummy = 2;
+  repeated Dum multiple_dummies = 3;
 }
-

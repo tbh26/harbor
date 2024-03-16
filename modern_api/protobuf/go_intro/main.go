@@ -14,8 +14,20 @@ func createSimple() *myProto.Simple {
 	}
 }
 
+func createComplex() *myProto.Complex {
+	return &myProto.Complex{
+		OneDummy: &myProto.Dum{Id: 42, Name: "First name. (one)"},
+		MultipleDummies: []*myProto.Dum{
+			{Id: 62, Name: "Next name. (62)"},
+			{Id: 73, Name: "Third name. (73)"},
+		},
+	}
+}
+
 func main() {
 	fmt.Println("Hello proto(c) world! ")
+	fmt.Println()
 
-	fmt.Println(createSimple())
+	fmt.Println("createSimple(); ", createSimple())
+	fmt.Println("createComplex(); ", createComplex())
 }
