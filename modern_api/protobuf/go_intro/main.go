@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	myProto "github.com/tbh26/harbor/modern_api/protobuf/go_intro/proto"
+	"google.golang.org/protobuf/proto"
 )
 
 func createSimple() *myProto.Simple {
@@ -53,6 +54,14 @@ func createMap() *myProto.MapExample {
 	return message
 }
 
+func useFile(p proto.Message, path string) {
+
+	_ = writeToFile(path, p)
+	sm2 := &myProto.Simple{}
+	_ = readFromFile(path, sm2)
+	fmt.Println("content read;", sm2)
+}
+
 func main() {
 	fmt.Println("Hello proto(c) world! ")
 	fmt.Println()
@@ -69,4 +78,8 @@ func main() {
 	printOneOf("Hello world?  (some filler text) ")
 
 	fmt.Println("createMap; ", createMap())
+	fmt.Println()
+
+	filePath := "simple.bin"
+	useFile(createSimple(), filePath)
 }
