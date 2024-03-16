@@ -31,6 +31,17 @@ func createEyeEnum() *myProto.Enumeration {
 	}
 }
 
+func printOneOf(item interface{}) {
+	switch t := item.(type) {
+	case *myProto.Result_Id:
+		fmt.Printf(" - This item has an Id: %d\n", item.(*myProto.Result_Id).Id)
+	case *myProto.Result_Message:
+		fmt.Printf(" - This item has an Message: %s\n", item.(*myProto.Result_Message).Message)
+	default:
+		fmt.Printf(" - item has unexpected type: %T  {{%v}} \n", t, item)
+	}
+}
+
 func main() {
 	fmt.Println("Hello proto(c) world! ")
 	fmt.Println()
@@ -38,4 +49,12 @@ func main() {
 	fmt.Println("createSimple(); ", createSimple())
 	fmt.Println("createComplex(); ", createComplex())
 	fmt.Println("createEyeEnum(); ", createEyeEnum())
+
+	fmt.Println("printOneOf():  ...  (next line) ")
+	printOneOf(&myProto.Result_Id{Id: 42})
+	fmt.Println("printOneOf():  ...  (next line) ")
+	printOneOf(&myProto.Result_Message{Message: "Hello one_of world!"})
+	fmt.Println("printOneOf():  ...  (next line) ")
+	printOneOf("Hello world?  (some filler text) ")
+
 }
