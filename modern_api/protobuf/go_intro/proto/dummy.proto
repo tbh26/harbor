@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package example.dummy;
+
+option go_package = "github.com/tbh26/harbor/modern_api/protobuf/go_intro/proto";
+
+message Dummy {
+    uint32 id = 1;
+}
