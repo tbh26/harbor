@@ -28,4 +28,5 @@ head_wrap/http_serve/main
 
 ### modern_api/
 modern_api/protobuf/go_intro/simple.bin
+modern_api/protobuf/python_intro/venv/
 
