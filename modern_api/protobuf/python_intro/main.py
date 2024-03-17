@@ -1,6 +1,8 @@
 #! /usr/bin/env python3
 ###
 from proto import simple_pb2, complex_pb2, enumerations_pb2, oneofs_pb2, maps_pb2
+from google.protobuf.message import Message
+from google.protobuf import json_format
 
 
 def create_simple() -> simple_pb2.Simple:
@@ -89,8 +91,70 @@ def map_demo():
     print()
 
 
+def use_file(message: Message, file_path: str) -> None:
+    print(f'use_file, {message=} ')
+    print(f" - write to file ({file_path})")
+    with open(file_path, "wb") as f:
+        bytes_as_str = message.SerializeToString()
+        f.write(bytes_as_str)
+
+    print(f" - read from file ({file_path})")
+    with open(file_path, "rb") as f:
+        t = type(message)
+        message_read = t().FromString(f.read())
+    print(f'use_file, {message_read=} ')
+
+
+def file_demo():
+    print('file demo')
+    sm = create_simple()
+    use_file(sm, 'simple.data')
+    cm = create_complex()
+    use_file(cm, 'complex.data')
+    print()
+
+
+def to_json(message: Message) -> str:
+    return json_format.MessageToJson(
+        message,
+        indent=4,
+        preserving_proto_field_name=True
+    )
+
+
+def from_json(json_str: str, type) -> Message:
+    return json_format.Parse(
+        json_str,
+        type(),
+        ignore_unknown_fields=True
+    )
+
+
+def json_demo():
+    print('file demo')
+
+    sm = create_simple()
+    json_str = to_json(sm)
+    print(f' {json_str=}')
+    message = from_json(json_str, simple_pb2.Simple)
+    print(f' {message=}')
+
+    cm = create_complex()
+    json_str = to_json(cm)
+    print(f' {json_str=}')
+    message = from_json(json_str, complex_pb2.Complex)
+    print(f' {message=}')
+
+    json_str = '{"id": 42, "unknown field": "bla bla"}'
+    print(f' {json_str=}')
+    message = from_json(json_str, simple_pb2.Simple)
+    print(f' {message=}')
+
+    print()
+
+
 def main():
-    print('Hello python proto world!')
+    print('Hello python proto world! 🌠')
     print()
 
     simple_demo()
@@ -99,6 +163,10 @@ def main():
 
     one_of_demo()
     map_demo()
+
+    file_demo()
+
+    json_demo()
 
 
 if __name__ == '__main__':
