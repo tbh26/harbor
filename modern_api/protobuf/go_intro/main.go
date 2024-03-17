@@ -48,9 +48,10 @@ func printOneOf(item interface{}) {
 func createMap() *myProto.MapExample {
 	message := &myProto.MapExample{
 		Ids: map[string]*myProto.IdWrapper{
-			"my_id":  {Id: 42},
-			"my_id2": {Id: 84},
-			"my_id3": {Id: 333},
+			"my id":   {Id: 42},
+			"next":    {Id: 2},
+			"another": {Id: 333},
+			"last":    {Id: 84},
 		},
 	}
 	return message
@@ -77,12 +78,18 @@ func main() {
 	fmt.Println("createComplex(); ", createComplex())
 	fmt.Println("createEyeEnum(); ", createEyeEnum())
 
-	fmt.Println("printOneOf():  ...  (next line) ")
-	printOneOf(&myProto.Result_Id{Id: 42})
-	fmt.Println("printOneOf():  ...  (next line) ")
-	printOneOf(&myProto.Result_Message{Message: "Hello one_of world!"})
-	fmt.Println("printOneOf():  ...  (next line) ")
-	printOneOf("Hello world?  (some filler text) ")
+	fmt.Println("printOneOf(): ... ")
+	idMessage := &myProto.Result_Id{Id: 42}
+	printOneOf(idMessage)
+	fmt.Println("printOneOf(): ...  (2x) ")
+	var message interface{}
+	message = &myProto.Result_Message{Message: "Hello one_of world!"}
+	printOneOf(message)
+	message = &myProto.Result_Id{Id: 24}
+	printOneOf(message)
+	fmt.Println("printOneOf():  ...  (filler) ")
+	message = "Hello world?  (some filler text) "
+	printOneOf(message)
 
 	fmt.Println("createMap; ", createMap())
 	fmt.Println()
