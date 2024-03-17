@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 ###
-from proto import simple_pb2, complex_pb2
+from proto import simple_pb2, complex_pb2, enumerations_pb2
 
 
 def create_simple() -> simple_pb2.Simple:
@@ -36,6 +36,20 @@ def complex_demo():
     print()
 
 
+def create_enum():
+    return enumerations_pb2.Enumeration(
+        # eye_color=1
+        eye_color=enumerations_pb2.EYE_COLOR_GREEN,
+    )
+
+
+def enum_demo():
+    print('enum demo')
+    enum_message = create_enum()
+    print(f'{enum_message=}')
+    print()
+
+
 def main():
     print('Hello python proto world!')
     print()
@@ -44,6 +58,9 @@ def main():
     print()
 
     complex_demo()
+    print()
+
+    enum_demo()
     print()
 
 
