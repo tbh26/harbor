@@ -10,6 +10,7 @@ import (
 func toJSON(pb proto.Message) string {
 	option := &protojson.MarshalOptions{
 		Multiline: true,
+		Indent:    "    ",
 	}
 
 	out, err := option.Marshal(pb)

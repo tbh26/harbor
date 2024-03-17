@@ -4,6 +4,7 @@ import (
 	"fmt"
 	myProto "github.com/tbh26/harbor/modern_api/protobuf/go_intro/proto"
 	"google.golang.org/protobuf/proto"
+	"reflect"
 )
 
 func createSimple() *myProto.Simple {
@@ -55,11 +56,16 @@ func createMap() *myProto.MapExample {
 }
 
 func useFile(p proto.Message, path string) {
-
 	_ = writeToFile(path, p)
 	sm2 := &myProto.Simple{}
 	_ = readFromFile(path, sm2)
 	fmt.Println("content read;", sm2)
+}
+
+func useFromJson(jsonString string, t reflect.Type) proto.Message {
+	message := reflect.New(t).Interface().(proto.Message)
+	fromJSON(jsonString, message)
+	return message
 }
 
 func main() {
@@ -82,4 +88,27 @@ func main() {
 
 	filePath := "simple.bin"
 	useFile(createSimple(), filePath)
+	fmt.Println()
+
+	simpleJsonStr := toJSON(createSimple())
+	fmt.Println("- simple json string:")
+	fmt.Println(simpleJsonStr)
+	simpleMessage := useFromJson(simpleJsonStr, reflect.TypeOf(myProto.Simple{}))
+	fmt.Printf("- simple message:\n%v\n", simpleMessage)
+	fmt.Println()
+
+	complexJsonStr := toJSON(createComplex())
+	fmt.Println("- complex json string:")
+	fmt.Println(complexJsonStr)
+	complexMessage := useFromJson(complexJsonStr, reflect.TypeOf(myProto.Complex{}))
+	fmt.Printf("- complex message:\n%v\n", complexMessage)
+	fmt.Println()
+
+	someOtherJsonString := `{"id": 42, "unknown": "bla bla"}`
+	fmt.Println("- other json string:")
+	fmt.Println(someOtherJsonString)
+	otherMessage := useFromJson(someOtherJsonString, reflect.TypeOf(myProto.Simple{}))
+	fmt.Printf("- other message:\n%v\n", otherMessage)
+	fmt.Println()
+
 }
