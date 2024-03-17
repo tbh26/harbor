@@ -22,6 +22,7 @@ func createComplex() *myProto.Complex {
 		MultipleDummies: []*myProto.Dum{
 			{Id: 62, Name: "Next name. (62)"},
 			{Id: 73, Name: "Third name. (73)"},
+			{Id: 84, Name: "Last name. (84)"},
 		},
 	}
 }
