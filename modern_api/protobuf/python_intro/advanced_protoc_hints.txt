@@ -1,0 +1,33 @@
+
+// protoc --decode_raw
+
+ $ cat simple.data | protoc --decode_raw
+   ...
+
+ $ cat complex.data | protoc --decode_raw
+   ...
+
+
+// protoc --decode=...
+
+ $ cd proto
+
+ $ cat ../simple.data | protoc --decode=example.simple.Simple simple.proto
+   ...
+
+ $ cat ../complex.data | protoc --decode=example.complex.Complex complex.proto
+   ...
+
+
+// protoc --encode=...
+
+ $ cd proto
+
+ $ cat ../simple.data | protoc --decode=example.simple.Simple simple.proto > ./simple_message.txt
+ $ cat ./simple_message.txt | protoc --encode=example.simple.Simple simple.proto > ./simple_message.pb
+ $ cmp ../simple.data ./simple_message.pb
+ $ ls -l ../simple.data ./simple_message.pb
+
+ $ cat ../complex.data | protoc --decode=example.complex.Complex complex.proto > ./complex_message.txt
+ $ cat ./complex_message.txt | protoc --encode=example.complex.Complex complex.proto > ./complex_message.pb
+ $ cmp ../complex.data ./complex_message.pb
