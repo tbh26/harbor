@@ -68,6 +68,8 @@ def one_of_demo():
     print(f'{one_of_message=}')
     one_of_message = create_one_of_str('Hello one of proto world! 👋')
     print(f'{one_of_message=}')
+    one_of_message.id = 24
+    print(f'{one_of_message=}')
     print()
 
 
