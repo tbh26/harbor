@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 ###
-from proto import simple_pb2, complex_pb2, enumerations_pb2, oneofs_pb2
+from proto import simple_pb2, complex_pb2, enumerations_pb2, oneofs_pb2, maps_pb2
 
 
 def create_simple() -> simple_pb2.Simple:
@@ -73,21 +73,32 @@ def one_of_demo():
     print()
 
 
+def create_map() -> maps_pb2.MapExample:
+    message = maps_pb2.MapExample()
+    message.ids["my id"].id = 42
+    message.ids["next"].id = 61
+    message.ids["another"].id = 73
+    message.ids["last"].id = 84
+    return message
+
+
+def map_demo():
+    print('map demo')
+    map_message = create_map()
+    print(f'{map_message=}')
+    print()
+
+
 def main():
     print('Hello python proto world!')
     print()
 
     simple_demo()
-    # print()
-
     complex_demo()
-    # print()
-
     enum_demo()
-    # print()
 
     one_of_demo()
-    # print()
+    map_demo()
 
 
 if __name__ == '__main__':
