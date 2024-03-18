@@ -1,0 +1,9 @@
+{
+    "first": "hello world",
+    "next": "some example data",
+    "scores": {
+        "Alice": 123,
+        "Bob": 45
+    },
+    "numbers": [42, 0, 4321]
+}

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package greet.dum;
+
+option go_package = "github.com/tbh26/harbor/modern_api/grpc/go_intro/greet/proto";
+
+// generate from cli ( cd ${project_root} );
+// $ protoc -Igreet/proto --go_out=. --go_opt=module=github.com/tbh26/harbor/modern_api/grpc/go_intro \
+//      --go-grpc_out=. --go-grpc_opt=module=github.com/tbh26/harbor/modern_api/grpc/go_intro greet/proto/dummy.proto
+//
+// see also:
+// https://protobuf.dev/
+// https://protobuf.dev/getting-started/gotutorial/
+// https://grpc.io/docs/languages/go/quickstart/
+
+
+message Dummy {
+  string some_name = 1;
+}
+
+service DummyService {
+
+};

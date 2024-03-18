@@ -19,3 +19,21 @@
 *.iml
 .vscode/
 .DS_Store
+
+### head_wrap
+head_wrap/hello/hello
+head_wrap/hello/main
+head_wrap/http_serve/http_serve
+head_wrap/http_serve/main
+
+# python
+/venv/
+
+
+### modern_api/
+modern_api/protobuf/go_intro/simple.bin
+modern_api/protobuf/python_intro/venv/
+modern_api/protobuf/python_intro/*.data
+modern_api/protobuf/python_intro/proto/*_message.*
+modern_api/grpc/go_intro/bin/greet/
+
