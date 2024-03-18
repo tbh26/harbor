@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package calculator;
+
+import "sum.proto";
+
+option go_package = "github.com/tbh26/harbor/modern_api/grpc/go_intro/calculator/proto";
+
+service CalculatorService {
+  rpc Sum(SumRequest) returns (SumResponse);
+}
+
