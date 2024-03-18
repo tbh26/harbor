@@ -19,9 +19,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("listen failed (%q); %v \n", address, err)
 	}
-	log.Printf("listing on %q \n", address)
+	log.Printf("listing on; %q \n", address)
 	s := grpc.NewServer()
+	pb.RegisterGreetServiceServer(s, &Server{})
 	if err = s.Serve(l); err != nil {
-		log.Fatalf("failed to serve: %v \n", err)
+		log.Fatalf("failed to serve; %v \n", err)
 	}
 }
