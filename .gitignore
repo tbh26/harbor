@@ -39,3 +39,7 @@ modern_api/grpc/go_intro/bin/greet/
 modern_api/grpc/go_intro/calculator/proto/*.pb.proto
 modern_api/grpc/go_intro/bin/calculator/
 
+
+### concurrent_go
+concurrent_go/udemy_working_with/**/bin/*
+
