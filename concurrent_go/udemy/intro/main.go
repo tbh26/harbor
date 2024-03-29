@@ -63,15 +63,20 @@ func nextDemo() {
 	printSomething(" = nextDemo(), done.")
 }
 
-func challenge() {
-	words := []string{"universe", "cosmos", "galaxy", "world"}
+func challenge(words []string) {
+	var wg sync.WaitGroup
 	for i, word := range words {
+		wg.Add(1)
 		message := fmt.Sprintf("Hello, %s. (%d) ", word, i)
-		go printSomething(message)
+		go printSome(message, &wg)
+		wg.Wait()
 	}
-	time.Sleep(10 * time.Millisecond)
-
 	printSomething(" = challenge(), done.")
+}
+
+func challengeWrapper() {
+	words := []string{"universe", "cosmos", "galaxy", "world"}
+	challenge(words)
 }
 
 func main() {
@@ -85,6 +90,6 @@ func main() {
 	nextDemo()
 	fmt.Println()
 
-	challenge()
+	challengeWrapper()
 	fmt.Println()
 }
