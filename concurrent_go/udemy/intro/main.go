@@ -2,10 +2,16 @@ package main
 
 import (
 	"fmt"
+	"sync"
 	"time"
 )
 
 func printSomething(s string) {
+	fmt.Println(s)
+}
+
+func printSome(s string, wg *sync.WaitGroup) {
+	defer wg.Done()
 	fmt.Println(s)
 }
 
@@ -29,6 +35,7 @@ func firstDemo() {
 }
 
 func nextDemo() {
+	var wg sync.WaitGroup
 
 	words := []string{
 		"alpha",
@@ -42,13 +49,18 @@ func nextDemo() {
 		"epsilon",
 	}
 
+	wg.Add(len(words))
+
 	for i, word := range words {
 		message := fmt.Sprintf(" - %q   (%d) ", word, i)
-		go printSomething(message)
+		//go printSomething(message)
+		go printSome(message, &wg)
 	}
 
-	time.Sleep(10 * time.Millisecond)
+	//time.Sleep(10 * time.Millisecond)
+	wg.Wait()
 
+	printSomething(" = nextDemo(), done.")
 }
 
 func main() {
