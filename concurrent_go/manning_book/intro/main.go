@@ -8,7 +8,7 @@ import (
 func doWork(id int) {
 	layout := time.StampMilli
 	fmt.Printf(" - Work %d started  at %s\n", id, time.Now().Format(layout))
-	time.Sleep(10 * time.Millisecond)
+	time.Sleep(12 * time.Millisecond)
 	fmt.Printf(" - Work %d finished at %s\n", id, time.Now().Format(layout))
 }
 
@@ -16,6 +16,15 @@ func firstDemo(upper int) {
 	for i := 0; i < upper; i++ {
 		doWork(i)
 	}
+	fmt.Println("sequential work done")
+}
+
+func nextDemo(upper int) {
+	for i := 0; i < upper; i++ {
+		go doWork(i)
+	}
+	time.Sleep(33 * time.Millisecond)
+	fmt.Println("next done (parallel)")
 }
 
 func main() {
@@ -23,6 +32,10 @@ func main() {
 	fmt.Println("Hello concurrent go intro world!  (II)")
 	fmt.Println()
 
-	firstDemo(5)
+	upper := 6
+	firstDemo(upper)
+	fmt.Println()
+
+	nextDemo(upper)
 	fmt.Println()
 }
