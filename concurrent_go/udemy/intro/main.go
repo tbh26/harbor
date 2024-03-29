@@ -63,6 +63,17 @@ func nextDemo() {
 	printSomething(" = nextDemo(), done.")
 }
 
+func challenge() {
+	words := []string{"universe", "cosmos", "galaxy", "world"}
+	for i, word := range words {
+		message := fmt.Sprintf("Hello, %s. (%d) ", word, i)
+		go printSomething(message)
+	}
+	time.Sleep(10 * time.Millisecond)
+
+	printSomething(" = challenge(), done.")
+}
+
 func main() {
 	fmt.Println()
 	fmt.Println("Hello concurrent go intro world!")
@@ -72,5 +83,8 @@ func main() {
 	fmt.Println()
 
 	nextDemo()
+	fmt.Println()
+
+	challenge()
 	fmt.Println()
 }
