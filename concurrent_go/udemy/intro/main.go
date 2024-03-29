@@ -28,11 +28,37 @@ func firstDemo() {
 	printSomething("This should be the last thing to be printed!")
 }
 
+func nextDemo() {
+
+	words := []string{
+		"alpha",
+		"beta",
+		"gamma",
+		"delta",
+		"pi",
+		"zeta",
+		"eta",
+		"theta",
+		"epsilon",
+	}
+
+	for i, word := range words {
+		message := fmt.Sprintf(" - %q   (%d) ", word, i)
+		go printSomething(message)
+	}
+
+	time.Sleep(10 * time.Millisecond)
+
+}
+
 func main() {
 	fmt.Println()
 	fmt.Println("Hello concurrent go intro world!")
 	fmt.Println()
 
 	firstDemo()
+	fmt.Println()
+
+	nextDemo()
 	fmt.Println()
 }
