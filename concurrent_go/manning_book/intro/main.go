@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"runtime"
 	"time"
 )
 
@@ -27,6 +28,12 @@ func nextDemo(upper int) {
 	fmt.Println("next done (parallel)")
 }
 
+func runtimeInfo() {
+	fmt.Println("Number of CPUs:", runtime.NumCPU())
+
+	fmt.Println("GOMAXPROCS:", runtime.GOMAXPROCS(0))
+}
+
 func main() {
 	fmt.Println()
 	fmt.Println("Hello concurrent go intro world!  (II)")
@@ -37,5 +44,8 @@ func main() {
 	fmt.Println()
 
 	nextDemo(upper)
+	fmt.Println()
+
+	runtimeInfo()
 	fmt.Println()
 }
