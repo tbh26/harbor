@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -20,7 +21,12 @@ func fileGrep(filePath string, search string) {
 		fmt.Println(err)
 		return
 	}
-	defer file.Close()
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			log.Printf("close %q failed; %q", filePath, err)
+		}
+	}(file)
 
 	scanner := bufio.NewScanner(file)
 	lineNum := 1
