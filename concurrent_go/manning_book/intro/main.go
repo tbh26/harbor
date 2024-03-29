@@ -34,6 +34,17 @@ func runtimeInfo() {
 	fmt.Println("GOMAXPROCS:", runtime.GOMAXPROCS(0))
 }
 
+func consoleGreet(message string) {
+	fmt.Println("consoleGreet, message;", message)
+}
+
+func lastDemo() {
+	go consoleGreet("hello  👋")
+	go consoleGreet("howdy  🤠")
+	runtime.Gosched()
+	fmt.Println("last demo finished...")
+}
+
 func main() {
 	fmt.Println()
 	fmt.Println("Hello concurrent go intro world!  (II)")
@@ -47,5 +58,8 @@ func main() {
 	fmt.Println()
 
 	runtimeInfo()
+	fmt.Println()
+
+	lastDemo()
 	fmt.Println()
 }
