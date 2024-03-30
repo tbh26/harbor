@@ -42,4 +42,5 @@ modern_api/grpc/go_intro/bin/calculator/
 
 ### concurrent_go
 concurrent_go/udemy_working_with/**/bin/*
+concurrent_go/manning_book/**/bin/*
 
