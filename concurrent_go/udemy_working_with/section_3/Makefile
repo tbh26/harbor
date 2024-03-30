@@ -22,5 +22,8 @@ test_race: race_demo/main_test.go
 compile_fix: fix_race_use_mutex/main.go
 	go build -o bin/fix_race_use_mutex fix_race_use_mutex/main.go
 
+test_fix: fix_race_use_mutex/main_test.go
+	go test -v -race ./fix_race_use_mutex/
+
 clean:
 	rm -f bin/*
