@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"time"
 )
 
 const allLetters = "abcdefghijklmnopqrstuvwxyz"
@@ -26,7 +27,7 @@ func countLetters(url string, frequency []int) {
 	fmt.Println("Completed:", url)
 }
 
-func main() {
+func inSequence() {
 	var frequency = make([]int, len(allLetters))
 	for i := 1000; i <= 1030; i++ {
 		url := fmt.Sprintf("https://www.rfc-editor.org/rfc/rfc%d.txt", i)
@@ -35,4 +36,24 @@ func main() {
 	for i, c := range allLetters {
 		fmt.Printf(" %c - %d \n", c, frequency[i])
 	}
+}
+
+func simultaneous() {
+	var frequency = make([]int, len(allLetters))
+	for i := 1000; i <= 1030; i++ {
+		url := fmt.Sprintf("https://www.rfc-editor.org/rfc/rfc%d.txt", i)
+		go countLetters(url, frequency)
+	}
+	time.Sleep(5 * time.Second)
+	for i, c := range allLetters {
+		fmt.Printf(" %c - %d \n", c, frequency[i])
+	}
+}
+
+func main() {
+	inSequence()
+
+	fmt.Println(" =-=-=-=-=-=-=-= ")
+
+	simultaneous()
 }
