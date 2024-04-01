@@ -27,7 +27,7 @@ func countLetters(url string, frequency []int, m *sync.Mutex) {
 		} // else skip
 	}
 	m.Unlock()
-	fmt.Println("Completed url:", url)
+	fmt.Printf("Completed url: %q (at; %v)\n", url, time.Now().Format("15:04:05"))
 }
 
 func simultaneousWithMutex() {
@@ -45,6 +45,33 @@ func simultaneousWithMutex() {
 	mutex.Unlock()
 }
 
+func simultaneousWithTryLock() {
+	mutex := sync.Mutex{}
+	var frequency = make([]int, 26)
+	for i := 2000; i <= 2200; i++ {
+		url := fmt.Sprintf("https://www.rfc-editor.org/rfc/rfc%d.txt", i)
+		go countLetters(url, frequency, &mutex)
+	}
+	for i := 0; i < 30; i++ {
+		time.Sleep(100 * time.Millisecond)
+		if mutex.TryLock() {
+			for i, c := range allLetters {
+				fmt.Printf(" %c - %d \n", c, frequency[i])
+			}
+			mutex.Unlock()
+			fmt.Println()
+		} else {
+			fmt.Println("Mutex in use. (try-lock failed)")
+		}
+	}
+}
+
 func main() {
+	fmt.Println(" =-=  count letter/char frequency =-=")
+
 	simultaneousWithMutex()
+
+	fmt.Println(" =-=-=-=-=-=-=-= ")
+
+	simultaneousWithTryLock()
 }
