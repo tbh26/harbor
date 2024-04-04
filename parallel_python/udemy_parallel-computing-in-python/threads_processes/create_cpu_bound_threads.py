@@ -7,10 +7,12 @@ from threading import Thread
 
 def do_work(n: int = 42):
     stamp = int(time.time())
-    print(f'Starting work {stamp=} at {n}')
-    time.sleep(1)
+    m = 0
+    print(f'Starting work {stamp=} at {n=}, {m=} cpu bound.')
+    for _ in range(50_000_000):
+        m += 1
     stamp = int(time.time())
-    print(f'Finished work {stamp=} at {n}')
+    print(f'Finished work {stamp=} at {n=}, {m=} cpu bound (done).')
 
 
 def main():
