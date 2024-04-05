@@ -8,7 +8,9 @@ bin/character_frequency: character_frequency/main.go
 bin/read_heavy_match_events: read_heavy_match_events/main.go
 	go build -race -o bin/read_heavy_match_events read_heavy_match_events/main.go
 
-.PHONY: clean
+.PHONY: all clean
+
+all: bin/character_frequency bin/read_heavy_match_events bin/stingy_spendy
 
 clean:
 	rm -f bin/*
