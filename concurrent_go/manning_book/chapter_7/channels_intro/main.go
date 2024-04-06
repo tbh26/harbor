@@ -54,6 +54,7 @@ func demo() {
 	firstDemo()
 
 	fmt.Println("\n\t\t=-=-=-=\n")
+	fmt.Printf(" -> it's expected to break below with a %q \n\n", "fatal error: all goroutines are asleep - deadlock!")
 
 	nextDemo()
 }
