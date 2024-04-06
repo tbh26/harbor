@@ -27,7 +27,7 @@ head_wrap/http_serve/http_serve
 head_wrap/http_serve/main
 
 # python
-/venv/
+venv/
 
 
 ### modern_api/
