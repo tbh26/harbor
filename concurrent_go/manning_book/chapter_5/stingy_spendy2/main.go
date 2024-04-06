@@ -21,6 +21,7 @@ func spendy(money *int, cond *sync.Cond) {
 	for i := 0; i < 500000; i++ {
 		cond.L.Lock()
 		for *money < 20 {
+			fmt.Printf("Spendy waiting for enough balance. (%d, i=%d)\n", *money, i)
 			cond.Wait()
 		}
 		*money -= 20
