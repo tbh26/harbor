@@ -31,8 +31,66 @@ func fileSearchDemo() {
 	wg.Wait()
 }
 
+////
+
+type WaitGrp struct {
+	groupSize int
+	cond      *sync.Cond
+}
+
+func NewWaitGrp() *WaitGrp {
+	return &WaitGrp{
+		cond: sync.NewCond(&sync.Mutex{}),
+	}
+}
+
+func (wg *WaitGrp) Add(delta int) {
+	wg.cond.L.Lock()
+	wg.groupSize += delta
+	wg.cond.L.Unlock()
+}
+
+func (wg *WaitGrp) Wait() {
+	wg.cond.L.Lock()
+	for wg.groupSize > 0 {
+		wg.cond.Wait()
+	}
+	wg.cond.L.Unlock()
+}
+
+func (wg *WaitGrp) Done() {
+	wg.cond.L.Lock()
+	wg.groupSize--
+	if wg.groupSize == 0 {
+		wg.cond.Broadcast()
+	}
+	wg.cond.L.Unlock()
+}
+
+////
+
+func doWork(id int, tag string, wg *WaitGrp) {
+	fmt.Printf("wg %d, done working (tag: %q).\n", id, tag)
+	wg.Done()
+}
+
+func improvedWaitGroupDemo() {
+	wg := NewWaitGrp()
+	for i := 1; i <= 4; i++ {
+		wg.Add(2)
+		go doWork(i, "first", wg)
+		go doWork(i, "next", wg)
+	}
+	wg.Wait()
+	fmt.Println("All complete")
+}
+
 func demo() {
 	fileSearchDemo()
+
+	fmt.Println("\n =-=-=-= \n")
+
+	improvedWaitGroupDemo()
 }
 
 func main() {
