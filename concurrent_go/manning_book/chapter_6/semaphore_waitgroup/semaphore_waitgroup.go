@@ -1,8 +1,6 @@
 package semaphore_waitgroup
 
-import (
-	"github.com/tbh26/harbor/concurrent_go/manning_book/chapter_5/semaphore"
-)
+import "github.com/tbh26/harbor/concurrent_go/manning_book/chapter_6/semaphore"
 
 type WaitGrp struct {
 	sema *semaphore.Semaphore
