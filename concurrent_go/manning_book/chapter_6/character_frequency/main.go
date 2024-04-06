@@ -61,7 +61,7 @@ func demo() {
 }
 
 func main() {
-	fmt.Println(" =-=  count letter/char frequency waitgroup version=-=")
+	fmt.Println(" =-=  count letter/char frequency waitgroup version =-=")
 
 	demo()
 }
