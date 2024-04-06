@@ -14,9 +14,12 @@ bin/flexible_waitgroup: flexible_waitgroup/main.go
 bin/barrier_intro: barrier_intro/main.go
 	go build -o bin/barrier_intro barrier_intro/main.go
 
+bin/matrix_and_barrier: matrix_and_barrier/main.go
+	go build -o bin/matrix_and_barrier matrix_and_barrier/main.go
+
 .PHONY: all clean
 
-all: bin/waitgroup_intro bin/character_frequency bin/sp_wg_demo bin/flexible_waitgroup bin/barrier_intro
+all: bin/waitgroup_intro bin/character_frequency bin/sp_wg_demo bin/flexible_waitgroup bin/barrier_intro bin/matrix_and_barrier
 
 clean:
 	rm -f bin/*
