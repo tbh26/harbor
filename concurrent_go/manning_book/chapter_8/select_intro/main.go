@@ -105,6 +105,31 @@ func fictitiousPasswordGuessDemo(log *slog.Logger) {
 
 ////
 
+func sendMsgAfter(seconds time.Duration) <-chan string {
+	messages := make(chan string)
+	go func() {
+		time.Sleep(seconds)
+		messages <- "Hello channel/select world!"
+	}()
+	return messages
+}
+
+func timeOutDemo(log *slog.Logger, d1 time.Duration, d2 time.Duration) {
+	log.Debug("begin timeOutDemo", slog.Any("d1", d1), slog.Any("d2", d2))
+	messages := sendMsgAfter(d1)
+	timeoutDuration := d2
+	fmt.Printf("Waiting for message for %v \n", timeoutDuration)
+	select {
+	case msg := <-messages:
+		fmt.Printf("Message received: %q \n", msg)
+	case tNow := <-time.After(timeoutDuration):
+		fmt.Printf("Timed out(%v). Waited until %s \n", d2, tNow.Format("15:04:05"))
+	}
+	log.Debug(" end  timeOutDemo")
+}
+
+////
+
 func demo() {
 	slogOpts := slog.HandlerOptions{
 		//Level: slog.LevelDebug,
@@ -116,6 +141,11 @@ func demo() {
 	fmt.Println("\n\t\t=-=-=-=\n")
 
 	fictitiousPasswordGuessDemo(logger)
+
+	fmt.Println("\n\t\t=-=-=-=\n")
+
+	timeOutDemo(logger, 1*time.Second, 2*time.Second)
+	timeOutDemo(logger, 2*time.Second, 1*time.Second)
 }
 
 func main() {
