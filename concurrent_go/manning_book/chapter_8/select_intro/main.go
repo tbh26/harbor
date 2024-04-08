@@ -20,8 +20,9 @@ func writeEvery(msg string, d time.Duration) <-chan string {
 
 func firstDemo(log *slog.Logger) {
 	log.Debug("begin firstDemo")
+	counter := 1
 
-	messagesFromA := writeEvery("Huey", 200*time.Millisecond)
+	messagesFromA := writeEvery("Huey ", 200*time.Millisecond)
 	messagesFromB := writeEvery("Dewey", 500*time.Millisecond)
 	messagesFromC := writeEvery("Louie", 700*time.Millisecond)
 
@@ -33,6 +34,13 @@ func firstDemo(log *slog.Logger) {
 			fmt.Printf("message: %q on channel %s\n", msgB, "B")
 		case msgC := <-messagesFromC:
 			fmt.Printf("message: %q on channel %s\n", msgC, "C")
+		default:
+			fmt.Printf(" =-= no messages received =-=  (counter: %d) \n", counter)
+			counter += 1
+			if counter > 42 {
+				return
+			}
+			time.Sleep(150 * time.Millisecond)
 		}
 	}
 
@@ -54,6 +62,7 @@ func demo() {
 
 func main() {
 	fmt.Println("Hello select (channels) world!   🪮 ")
+	fmt.Println()
 
 	demo()
 }
