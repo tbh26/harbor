@@ -6,6 +6,7 @@ import (
 	"math"
 	"math/rand"
 	"os"
+	"time"
 )
 
 func primesOnly(inputs <-chan int) <-chan int {
@@ -44,6 +45,47 @@ func anotherSelectDemo(log *slog.Logger) {
 	log.Debug(" end  anotherSelectDemo")
 }
 
+func generateAmounts(n int) <-chan int {
+	amounts := make(chan int)
+	go func() {
+		defer close(amounts)
+		for i := 0; i < n; i++ {
+			amounts <- rand.Intn(100) + 1
+			time.Sleep(100 * time.Millisecond)
+		}
+	}()
+	return amounts
+}
+
+func nilChannelUsage(log *slog.Logger) {
+	log.Debug("begin nilChannelUsage")
+	sales := generateAmounts(50)
+	expenses := generateAmounts(40)
+	endOfDayAmount := 0
+	//
+	// This pattern of merging channel data into one result/stream is referred to as a fan-in pattern.
+	for sales != nil || expenses != nil {
+		select {
+		case sale, moreData := <-sales:
+			if moreData {
+				fmt.Println("Sale of:", sale)
+				endOfDayAmount += sale
+			} else {
+				sales = nil
+			}
+		case expense, moreData := <-expenses:
+			if moreData {
+				fmt.Println("Expense of:", expense)
+				endOfDayAmount -= expense
+			} else {
+				expenses = nil
+			}
+		}
+	}
+	fmt.Println("End of day profit and loss:", endOfDayAmount)
+	log.Debug(" end  nilChannelUsage")
+}
+
 func demo() {
 	slogOpts := slog.HandlerOptions{
 		Level: slog.LevelDebug,
@@ -51,6 +93,10 @@ func demo() {
 	logger := slog.New(slog.NewTextHandler(os.Stderr, &slogOpts))
 
 	anotherSelectDemo(logger)
+
+	fmt.Println("\n\t\t=-=-=-=\n")
+
+	nilChannelUsage(logger)
 }
 
 func main() {
