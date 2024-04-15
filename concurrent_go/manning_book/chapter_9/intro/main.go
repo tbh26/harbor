@@ -48,7 +48,7 @@ func firstDemo() {
 	}
 }
 
-func generateUrls(quit <-chan int) <-chan string {
+func generateUrls(quit <-chan bool) <-chan string {
 	urls := make(chan string)
 	go func() {
 		defer close(urls)
@@ -65,7 +65,7 @@ func generateUrls(quit <-chan int) <-chan string {
 }
 
 func nextDemo() {
-	quit := make(chan int)
+	quit := make(chan bool)
 	defer close(quit)
 	results := generateUrls(quit)
 	for result := range results {
