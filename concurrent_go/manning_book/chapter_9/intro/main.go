@@ -2,7 +2,11 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"math/rand"
+	"net/http"
+	"regexp"
+	"strings"
 	"time"
 )
 
@@ -80,12 +84,84 @@ func nextDemo() {
 	fmt.Println("next demo done.")
 }
 
+func downloadPages(quit <-chan bool, urls <-chan string) <-chan string {
+	pages := make(chan string)
+	go func() {
+		defer close(pages)
+		moreData, url := true, ""
+		for moreData {
+			select {
+			case url, moreData = <-urls:
+				if moreData {
+					resp, _ := http.Get(url)
+					if resp.StatusCode != 200 {
+						panic("Server’s error: " + resp.Status)
+					}
+					body, _ := io.ReadAll(resp.Body)
+					pages <- string(body)
+					_ = resp.Body.Close()
+				}
+			case q := <-quit:
+				fmt.Printf("Quitting download pages, received: '%t' \n", q)
+				return
+			}
+		}
+	}()
+	return pages
+}
+
+func thirdDemo() {
+	quit := make(chan bool)
+	defer close(quit)
+	results := downloadPages(quit, generateUrls(quit))
+	for result := range results {
+		fmt.Printf(" - result length: %d \n", len(result))
+	}
+	fmt.Println("third demo done.")
+}
+
+func extractWords(quit <-chan bool, pages <-chan string) <-chan string {
+	words := make(chan string)
+	go func() {
+		defer close(words)
+		wordRegex := regexp.MustCompile(`[a-zA-Z]+`)
+		moreData, pg := true, ""
+		for moreData {
+			select {
+			case pg, moreData = <-pages:
+				if moreData {
+					for _, word := range wordRegex.FindAllString(pg, -1) {
+						words <- strings.ToLower(word)
+					}
+				}
+			case q := <-quit:
+				fmt.Printf("Quitting extract words, received: '%t' \n", q)
+				return
+			}
+		}
+	}()
+	return words
+}
+
+func fourthDemo() {
+	quit := make(chan bool)
+	defer close(quit)
+	results := extractWords(quit, downloadPages(quit, generateUrls(quit)))
+	for result := range results {
+		fmt.Printf(" - word: %q", result)
+	}
+	fmt.Println()
+	fmt.Println("fourth demo done.")
+}
+
 func demo() {
 	firstDemo()
-
 	fmt.Println("\n\t\t=-=-=-=\n")
-
 	nextDemo()
+	fmt.Println("\n\t\t=-= pipeline I =-=\n")
+	thirdDemo()
+	fmt.Println("\n\t\t=-= pipeline II =-=\n")
+	fourthDemo()
 	fmt.Println()
 }
 
