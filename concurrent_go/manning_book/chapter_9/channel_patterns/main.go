@@ -13,49 +13,6 @@ import (
 
 const downloaders = 20
 
-//var randSrc = rand.NewSource(time.Now().UnixNano())
-//var random = rand.New(randSrc)
-//
-//func generateRandomWord(strLen int) string {
-//	chars := "abcdefghijklmnopqrstuvwxyz"
-//	word := make([]byte, strLen)
-//	for i := range word {
-//		word[i] = chars[random.Intn(len(chars))]
-//	}
-//	return string(word)
-//}
-//
-//func wordsReceiver(words <-chan string, quit chan bool, max int) {
-//	go func() {
-//		var word string
-//		fmt.Printf("wordsReceiver, words: '%v', quit: '%v', max: %d \n", words, quit, max)
-//		for i := 0; i < max; i++ {
-//			word = <-words
-//			fmt.Printf(" - received: %q  (%d)\n", word, len(word))
-//			time.Sleep(123 * time.Millisecond)
-//		}
-//		close(quit)
-//	}()
-//}
-
-//func firstDemo() {
-//	words := make(chan string)
-//	quit := make(chan bool)
-//	wordsReceiver(words, quit, 5)
-//	var next string
-//	nextLen := 2
-//	for {
-//		next = generateRandomWord(nextLen)
-//		nextLen += 1
-//		select {
-//		case words <- next:
-//		case q := <-quit:
-//			fmt.Printf("Quitting words gen. (%v) \n", q)
-//			return
-//		}
-//	}
-//}
-
 func generateUrls(quit <-chan bool) <-chan string {
 	urls := make(chan string)
 	go func() {
@@ -74,19 +31,6 @@ func generateUrls(quit <-chan bool) <-chan string {
 	}()
 	return urls
 }
-
-//func nextDemo() {
-//	quit := make(chan bool)
-//	defer close(quit)
-//	results := generateUrls(quit)
-//	for result := range results {
-//		fmt.Printf("Result: %q \n", result)
-//		if result == "https://www.rfc-editor.org/rfc/rfc1025.txt" {
-//			quit <- true
-//		}
-//	}
-//	fmt.Println("next demo done.")
-//}
 
 func downloadPages(quit <-chan bool, urls <-chan string) <-chan string {
 	pages := make(chan string)
@@ -115,16 +59,6 @@ func downloadPages(quit <-chan bool, urls <-chan string) <-chan string {
 	}()
 	return pages
 }
-
-//func thirdDemo() {
-//	quit := make(chan bool)
-//	defer close(quit)
-//	results := downloadPages(quit, generateUrls(quit))
-//	for result := range results {
-//		fmt.Printf(" - result length: %d \n", len(result))
-//	}
-//	fmt.Println("third demo done.")
-//}
 
 func longestWords(quit <-chan bool, words <-chan string) <-chan string {
 	longWords := make(chan string)
@@ -290,11 +224,88 @@ func useBroadcast() {
 	fmt.Println("\nMost frequent Words:", <-frequentResults)
 }
 
+func take[K any](quit chan bool, n int, input <-chan K) <-chan K {
+	output := make(chan K)
+	go func() {
+		defer close(output)
+		moreData := true
+		var msg K
+		for n > 0 && moreData {
+			select {
+			case msg, moreData = <-input:
+				if moreData {
+					output <- msg
+					n--
+				}
+			case <-quit:
+				return
+			}
+		}
+		if n == 0 {
+			close(quit)
+		}
+	}()
+	return output
+}
+
+func takeNdemo() {
+	quitWords := make(chan bool)
+	quit := make(chan bool)
+	defer close(quit)
+	urls := generateUrls(quitWords)
+	pages := make([]<-chan string, downloaders)
+	for i := 0; i < downloaders; i++ {
+		pages[i] = downloadPages(quitWords, urls)
+	}
+	words := take(quitWords, 10000, extractWords(quitWords, fanIn(quitWords, pages...)))
+	wordsMulti := broadcast(quit, words, 2)
+	longestResults := longestWords(quit, wordsMulti[0])
+	frequentResults := frequentWords(quit, wordsMulti[1])
+
+	fmt.Println("Longest Words:", <-longestResults)
+	fmt.Println("Most frequent Words:", <-frequentResults)
+}
+
+func primeMultipleFilter(numbers <-chan int, quit chan<- bool) {
+	var right chan int
+	p := <-numbers
+	fmt.Printf("%d ", p)
+	for n := range numbers {
+		if n%p != 0 {
+			if right == nil {
+				right = make(chan int)
+				go primeMultipleFilter(right, quit)
+			}
+			right <- n
+		}
+	}
+	if right == nil {
+		close(quit)
+	} else {
+		close(right)
+	}
+}
+
+func primeDemo() {
+	numbers := make(chan int)
+	quit := make(chan bool)
+	go primeMultipleFilter(numbers, quit)
+	for i := 2; i < 100000; i++ {
+		numbers <- i
+	}
+	close(numbers)
+	<-quit
+}
+
 func demo() {
 	fmt.Println("\n\t\t=-= fan out / in =-=\n")
 	fanOutIn()
 	fmt.Println("\n\t\t=-= use broadcast =-=\n")
 	useBroadcast()
+	fmt.Println("\n\t\t=-= take n =-=\n")
+	takeNdemo()
+	fmt.Println("\n\t\t=-= prime (with channels) =-=\n")
+	primeDemo()
 	fmt.Println("\n\t\t=-= done =-=\n")
 }
 
