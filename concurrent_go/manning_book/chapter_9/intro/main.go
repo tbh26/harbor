@@ -156,7 +156,7 @@ func fourthDemo() {
 
 func demo() {
 	firstDemo()
-	fmt.Println("\n\t\t=-=-=-=\n")
+	fmt.Println("\n\t\t=-= use quit channel =-=\n")
 	nextDemo()
 	fmt.Println("\n\t\t=-= pipeline I =-=\n")
 	thirdDemo()
